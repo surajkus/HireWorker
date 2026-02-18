@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Available Jobs | HireWorkers</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg-light: #f8fafc;
+            --sidebar-bg: #1e293b;
+            --text-main: #334155;
+            --white: #ffffff;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --sidebar-width: 260px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        body {
+            background: var(--bg-light);
+            color: var(--text-main);
+            display: flex;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            background: #ffffff;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1001;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 0 5%;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            height: 100vh;
+            background: var(--sidebar-bg);
+            color: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 90px 20px 30px 20px;
+            width: var(--sidebar-width);
+            z-index: 1000;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #94a3b8;
+            text-decoration: none;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            transition: 0.2s;
+        }
+
+        .sidebar a:hover, .sidebar a.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .logout-container {
+            position: absolute;
+            bottom: 30px;
+            width: calc(100% - 40px);
+        }
+
+        /* MAIN CONTENT AREA */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            margin-top: 70px;
+            padding: 40px;
+            width: calc(100% - var(--sidebar-width));
+        }
+
+        .header-section {
+            margin-bottom: 30px;
+        }
+
+        /* JOBS GRID */
+        .jobs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .job-card {
+            background: var(--white);
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .job-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .job-card h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.25rem;
+        }
+
+        .job-card p {
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .job-card b {
+            color: #1e293b;
+        }
+
+        .apply-btn {
+            width: 100%;
+            margin-top: 15px;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .apply-btn:hover {
+            background: var(--primary-hover);
+        }
+
+        /* MOBILE RESPONSIVENESS */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+                padding: 90px 10px;
+            }
+            .sidebar span { display: none; }
+            .main-content {
+                margin-left: 70px;
+                width: calc(100% - 70px);
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="navbar">
+        <a href="#" class="logo">HireWorkers</a>
+    </header>
+
+    <aside class="sidebar">
+        <nav>
+            <a href="mang_dashboard.html"><i class="fas fa-chart-line"></i> <span>Dashboard</span></a>
+            <a href="Announces_job.html" class="active"><i class="fas fa-plus-circle"></i> <span>Announce Job</span></a>
+            <a href="#"><i class="fas fa-user-clock"></i> <span>Hiring Requests</span></a>
+            <a href="#"><i class="fas fa-users"></i> <span>Workers List</span></a>
+        </nav>
+        <div class="logout-container">
+            <a href="#"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="header-section">
+            <h1>Available Opportunities</h1>
+            <p>Find the best talent or your next gig.</p>
+        </div>
+
+        <div class="jobs-grid">
+            <div class="job-card">
+                <div>
+                    <h3>Electrician</h3>
+                    <p><b>Skills:</b> Wiring, Safety</p>
+                    <p><b>Salary:</b> ₹15,000</p>
+                    <p><b>Location:</b> Patna</p>
+                    <p>Install and repair electrical systems for residential buildings.</p>
+                </div>
+                <button class="apply-btn">Apply Now</button>
+            </div>
+
+            <div class="job-card">
+                <div>
+                    <h3>Plumber</h3>
+                    <p><b>Skills:</b> Pipe fitting</p>
+                    <p><b>Salary:</b> ₹12,000</p>
+                    <p><b>Location:</b> Muzaffarpur</p>
+                    <p>Fix water pipes, leakage, and maintain drainage systems.</p>
+                </div>
+                <button class="apply-btn">Apply Now</button>
+            </div>
+
+            <div class="job-card">
+                <div>
+                    <h3>Web Developer</h3>
+                    <p><b>Skills:</b> HTML, CSS, PHP</p>
+                    <p><b>Salary:</b> ₹25,000</p>
+                    <p><b>Location:</b> Remote</p>
+                    <p>Build and maintain modern web dashboards and interfaces.</p>
+                </div>
+                <button class="apply-btn">Apply Now</button>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

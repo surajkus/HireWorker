@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Manager Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg-light: #f8fafc;
+            --sidebar-bg: #1e293b;
+            --text-main: #334155;
+            --white: #ffffff;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background: var(--bg-light);
+            color: var(--text-main);
+        }
+
+        /* NAVBAR */
+        .navbar {
+            background: rgb(234, 231, 231);
+            height: 70px;
+            display: flex;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--dark);
+        }
+
+        /* Desktop Menu */
+        .nav-menu {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            margin-left: 30px;
+            transition: var(--transition);
+        }
+
+        .nav-menu a:hover {
+            color: var(--primary);
+        }
+
+        .nav-btn {
+            background: var(--primary);
+            color: white !important;
+            padding: 10px 20px;
+            border-radius: 6px;
+        }
+
+        @media (max-width: 768px) {
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .nav-menu {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                flex-direction: column;
+                background: white;
+                width: 100%;
+                height: calc(100vh - 70px);
+                text-align: center;
+                padding-top: 40px;
+                transition: 0.3s;
+                box-shadow: var(--shadow);
+            }
+
+            .foot{
+                width: 100%;
+                padding: 40px;
+                background-color: whitesmoke;
+                border-top: 1px solid #e2e8f0;
+                text-align: center;
+                color: var(--text-muted);
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .nav-menu a {
+                margin: 20px 0;
+                font-size: 1.2rem;
+            }
+
+            /* Burger animation */
+            .menu-toggle.open span:nth-child(1) {
+                transform: translateY(8px) rotate(45deg);
+            }
+
+            .menu-toggle.open span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .menu-toggle.open span:nth-child(3) {
+                transform: translateY(-8px) rotate(-45deg);
+            }
+
+            .hero-container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .hero-text h1 {
+                font-size: 36px;
+            }
+        }
+
+        .btn-manager {
+            background-color: #063f9c;
+            color: white;
+        }
+
+        .btn-employee {
+            background-color: #063f9c;
+            color: white;
+        }
+
+        .btn-manager:hover {
+            background-color: #1d4ed8;
+        }
+
+        .btn-employee:hover {
+            background-color: #1d4ed8;
+        }
+
+        @media (max-width: 850px) {
+            .selection-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            background: var(--sidebar-bg);
+            color: white;
+            position: fixed;
+            padding: 30px 20px;
+            transition: all 0.3s;
+        }
+
+        .sidebar h2 {
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #94a3b8;
+            text-decoration: none;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            transition: 0.2s;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Main Content */
+        .main {
+            margin-left: 260px;
+            padding: 40px;
+        }
+
+        .header-section {
+            margin-bottom: 30px;
+        }
+
+        .header-section h1 {
+            font-size: 28px;
+            color: #0f172a;
+        }
+
+        /* Cards Container */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        /* Enhanced Card Design */
+        .card {
+            background: var(--white);
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid #e2e8f0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+        }
+
+        .card-icon {
+            font-size: 24px;
+            color: var(--primary);
+            background: #eef2ff;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: #1e293b;
+        }
+
+        .card p {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+
+        .card button {
+            width: 100%;
+            padding: 10px;
+            background: #f1f5f9;
+            color: var(--primary);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .card button:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Enhanced Job Form */
+        .job-form {
+            background: var(--white);
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            max-width: 600px;
+        }
+
+        .job-form h2 {
+            margin-bottom: 20px;
+            font-size: 20px;
+            color: #1e293b;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .job-form input {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .job-form input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .job-form button {
+            background: var(--primary);
+            color: white;
+            padding: 14px;
+            width: 100%;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.2s;
+        }
+
+        .job-form button:hover {
+            background: var(--primary-hover);
+        }
+
+        /* Responsive */
+        @media(max-width:1024px) {
+            .sidebar {
+                width: 80px;
+                padding: 20px 10px;
+            }
+
+            .sidebar h2,
+            .sidebar a span {
+                display: none;
+            }
+
+            .main {
+                margin-left: 80px;
+            }
+        }
+
+        @media(max-width:768px) {
+            .sidebar {
+                display: none;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        a {
+            text-decoration: none;
+            color: rgb(39, 39, 152);
+        }
+
+        a:hover {
+            color: #faf9f9;
+        }
+
+        /* popup show */
+      :root {
+    --primary: #4f46e5;
+    --primary-dark: #3730a3;
+    --overlay: rgba(15, 23, 42, 0.7);
+  }
+
+  /* body { font-family: 'Segoe UI', sans-serif; background: #f8fafc; margin: 0; } */
+
+  /* Trigger Button Styling */
+  .add-btn {
+    padding: 12px 24px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    margin: 20px;
+  }
+
+  /* 1. The Modal Overlay (Hidden by default) */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--overlay);
+    backdrop-filter: blur(4px); /* Modern blur effect */
+    display: none; /* Hidden */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+  }
+
+  /* 2. The Form Container (Popup Box) */
+  .job-form-container {
+    background: white;
+    width: 90%;
+    max-width: 500px;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+    position: relative; /* Essential for absolute positioning of cancel button */
+    transform: translateY(0);
+    animation: slideUp 0.4s ease;
+  }
+
+  /* 3. The Cancel Button (Top Right) */
+  .close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #f1f5f9;
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    color: #64748b;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+  }
+
+  .close-btn:hover {
+    background: #fee2e2;
+    color: #ef4444;
+    transform: rotate(90deg);
+  }
+
+  /* Form Elements Styling */
+  .job-form-container h2 { margin-top: 0; color: #1e293b; font-size: 1.5rem; }
+  
+  .job-form label { display: block; margin-top: 15px; font-weight: 600; color: #475569; font-size: 14px; }
+  
+  .job-form input, .job-form textarea {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    outline: none;
+  }
+
+  .job-form input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
+
+  .post-btn {
+    width: 100%;
+    background: var(--primary);
+    color: white;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    margin-top: 20px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  /* Animations */
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+
+
+    </style>
+</head>
+
+<body>
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">Hire<span>Workers</span></a>
+
+  
+
+            <nav class="nav-menu" id="nav-menu">
+                <!-- <a href="index.html">Home</a> -->
+                <!-- <a href="#">Find Jobs</a> -->
+                <!-- <a href="#">Managers</a> -->
+                <!-- <a href="frist.html" class="nav-btn">Get Started</a> -->
+            </nav>
+
+<!-- 
+            <select id="language">
+                <option value="en">English</option>
+                <option value="hi">Hindi</option>
+            </select> -->
+            <!-- <div id="google_translate_element" style="display:none;"></div> -->
+
+
+        </div>
+
+    </header>
+
+    <div class="sidebar">
+        <h2><i class="fas fa-briefcase"></i> <span>WorkHub</span></h2>
+        <a href="mang_dashboard.html" class="active"><i class="fas fa-chart-line"></i> <span>Dashboard</span></a>
+        <a href="Announces_job.html"><i class="fas fa-plus-circle"></i> <span>Announce Job</span></a>
+        <a href="#"><i class="fas fa-user-clock"></i> <span>Hiring Requests</span></a>
+        <a href="#"><i class="fas fa-users"></i> <span>Workers List</span></a>
+        <div style="margin-top: auto; position: absolute; bottom: 30px; width: 85%;">
+            <a href="#"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a>
+        </div>
+    </div>
+
+    <div class="main">
+        <br><br><br><br>
+        <div class="header-section">
+            <h1>Welcome back, Manager 👋</h1>
+            <p style="color: #64748b;">Here is what's happening with your hiring today.</p>
+        </div>
+
+        <div class="cards">
+            <div class="card">
+                <div class="card-icon"><i class="fas fa-bullhorn"></i></div>
+                <h3>Announce Hiring</h3>
+                <p>Post a new job requirement to the public board.</p>
+                <button onclick="openModal()">Add Job</button>
+            </div>
+
+            <div class="card">
+                <div class="card-icon"><i class="fas fa-file-invoice"></i></div>
+                <h3>Applicants</h3>
+                <p>You have 12 new worker applications to review.</p>
+                <button>View Applications</button>
+            </div>
+
+            <div class="card">
+                <div class="card-icon"><i class="fas fa-user-check"></i></div>
+                <h3>Hire Worker</h3>
+                <p>Finalize the onboarding for selected candidates.</p>
+                <button>Manage Hiring</button>
+            </div>
+
+            <div class="card">
+                <div class="card-icon"><i class="fas fa-layer-group"></i></div>
+                <h3>Total Jobs</h3>
+                <p>Manage your 8 currently active job postings.</p>
+                <button>Open List</button>
+            </div>
+        </div>
+
+        <div class="job-form">
+            <h2><i class="fas fa-pen"></i> Add Hiring Requirement</h2>
+            <form>
+                <div class="form-grid">
+                    <input type="text" placeholder="Job Title (e.g. Electrician)">
+                    <input type="text" placeholder="Required Skills">
+                </div>
+                <div class="form-grid">
+                    <input type="text" placeholder="Salary Range">
+                    <input type="text" placeholder="Location">
+                </div>
+                <button type="submit">Post Job Now</button>
+            </form>
+        </div>
+    </div>
+    <footer class="foot">
+        <p>© 2026 HireWorkers. Designed with ❤️ by Suraj.</p>
+    </footer>
+    
+
+  <div class="modal-overlay" id="jobModal">
+    
+    <div class="job-form-container">
+      <button class="close-btn" onclick="closeModal()">&times;</button>
+      
+      <h2>📢 Post Hiring Job</h2>
+      
+      <form action="php/post_job.php" method="POST" class="job-form">
+        <label>Job Title</label>
+        <input type="text" name="title" placeholder="e.g. Electrician" required>
+
+        <label>Required Skills</label>
+        <input type="text" name="skills" placeholder="Wiring, Safety" required>
+
+        <div style="display: flex; gap: 15px;">
+          <div style="flex: 1;">
+            <label>Salary</label>
+            <input type="text" name="salary" placeholder="₹15,000" required>
+          </div>
+          <div style="flex: 1;">
+            <label>Location</label>
+            <input type="text" name="location" placeholder="Patna" required>
+          </div>
+        </div>
+
+        <label>Job Description</label>
+        <textarea name="description" rows="3" placeholder="Describe the role..." required></textarea>
+
+        <button type="submit" class="post-btn">Post Job</button>
+      </form>
+    </div>
+  </div>
+
+</body>
+<script>
+    const modal = document.getElementById('jobModal');
+
+    function openModal() {
+      modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+      modal.style.display = 'none';
+    }
+
+    // Close modal if user clicks outside the white box
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        closeModal();
+      }
+    }
+
+    // end popup
+    const mobileMenu = document.getElementById("mobile-menu");
+    const navMenu = document.getElementById("nav-menu");
+
+    mobileMenu.addEventListener("click", () => {
+        // This adds/removes 'active' to show the menu
+        navMenu.classList.toggle("active");
+        // This transforms the burger into an 'X'
+        mobileMenu.classList.toggle("open");
+    });
+
+    // Closes menu when you click a link
+    document.querySelectorAll(".nav-menu a").forEach(link => {
+        link.addEventListener("click", () => {
+            navMenu.classList.remove("active");
+            mobileMenu.classList.remove("open");
+        });
+    });
+
+
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement(
+            { pageLanguage: 'en' },
+            'google_translate_element'
+        );
+    }
+
+    document.getElementById("language").addEventListener("change", function () {
+        var lang = this.value;
+        var combo = document.querySelector(".goog-te-combo");
+        combo.value = lang;
+        combo.dispatchEvent(new Event("change"));
+    });
+</script>
+
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+</script>
+
+</html>
